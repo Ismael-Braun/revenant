@@ -19,6 +19,8 @@ typedef struct ept_hook
 {
 	alignas(PAGE_SIZE) CHAR fake_page[PAGE_SIZE];
 
+	PMDL mdl;
+
 	void* physical_address;
 	void* virtual_address;
 
@@ -42,9 +44,9 @@ public:
 	auto split_large_page(u64 phys) -> bool;
 
 	auto find_ept_hook(void* phys_addr)->ept_hook*;
-	auto remove_ept_hook(void* virt_addr) -> bool;
+	auto remove_ept_hook(void* virt_addr) -> PMDL;
 
-	auto install_page_hook(void* addr, u8* patch, size_t patch_size, ept_hint* hint) -> bool;
+	auto install_page_hook(void* addr, u8* patch, size_t patch_size, ept_hint* hint, PMDL mdl) -> bool;
 
 	ept_hook* hook_list;
 	u64 hook_count;

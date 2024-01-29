@@ -62,8 +62,9 @@ namespace hypercalls
 		auto patch = reinterpret_cast<u8*>(vcpu->ctx->rdx);
 		auto patch_size = vcpu->ctx->r8;
 		auto hint = reinterpret_cast<ept_hint*>(vcpu->ctx->r9);
+		auto mdl = reinterpret_cast<PMDL>(vcpu->ctx->r10);
 
-		vcpu->ctx->rax = ghv.ept->install_page_hook(addr, patch, patch_size, hint);
+		vcpu->ctx->rax = ghv.ept->install_page_hook(addr, patch, patch_size, hint, mdl);
 
 		ghv.ept->invalidate();
 
@@ -74,7 +75,7 @@ namespace hypercalls
 	{
 		auto virt = reinterpret_cast<void*>(vcpu->ctx->rcx);
 
-		vcpu->ctx->rax = ghv.ept->remove_ept_hook(virt);
+		vcpu->ctx->rax = (u64)ghv.ept->remove_ept_hook(virt);
 
 		skip_instruction();
 	}

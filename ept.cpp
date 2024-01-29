@@ -183,7 +183,7 @@ auto ept_t::find_ept_hook(void* phys_addr)->ept_hook*
 	return nullptr;
 }
 
-auto ept_t::remove_ept_hook(void* virt_addr) -> bool
+auto ept_t::remove_ept_hook(void* virt_addr) -> PMDL
 {
 	for (int i = 0; i < this->hook_count; ++i)
 	{
@@ -193,6 +193,8 @@ auto ept_t::remove_ept_hook(void* virt_addr) -> bool
 
 			hook->target_page->flags = hook->original_page.flags;
 
+			auto ret = hook->mdl;
+
 			memmove(this->hook_list + this->hook_count - 1, this->hook_list + this->hook_count,
 				MAX_EPT_HOOKS - this->hook_count);
 
@@ -200,14 +202,14 @@ auto ept_t::remove_ept_hook(void* virt_addr) -> bool
 
 			invalidate();
 
-			return true;
+			return ret;
 		}
 	}
 
-	return false;
+	return nullptr;
 }
 
-auto ept_t::install_page_hook(void* addr, u8* patch, size_t patch_size, ept_hint* hint) -> bool
+auto ept_t::install_page_hook(void* addr, u8* patch, size_t patch_size, ept_hint* hint, PMDL mdl) -> bool
 {
 	auto vmroot_cr3 = __readcr3();
 	cr3 guest_cr3;
@@ -248,6 +250,7 @@ auto ept_t::install_page_hook(void* addr, u8* patch, size_t patch_size, ept_hint
 
 	this->hook_count += 1;
 
+	hook_entry->mdl = mdl;
 	hook_entry->physical_address = physical_page;
 	hook_entry->virtual_address = addr;
 

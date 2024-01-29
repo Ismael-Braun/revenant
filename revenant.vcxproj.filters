@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="hypervisor">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\asm">
+      <UniqueIdentifier>{0de2b4d1-b20d-434d-a90f-c629bc5576ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hypervisor\idt &amp; gdt">
+      <UniqueIdentifier>{e9a19982-87cb-46c7-bfbb-80f9f18c2ecd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers.cpp">
+      <Filter>hypervisor</Filter>
+    </ClCompile>
+    <ClCompile Include="hv.cpp">
+      <Filter>hypervisor</Filter>
+    </ClCompile>
+    <ClCompile Include="segment.cpp">
+      <Filter>hypervisor</Filter>
+    </ClCompile>
+    <ClCompile Include="timing.cpp">
+      <Filter>hypervisor</Filter>
+    </ClCompile>
+    <ClCompile Include="vcpu.cpp">
+      <Filter>hypervisor</Filter>
+    </ClCompile>
+    <ClCompile Include="vmcs.cpp">
+      <Filter>hypervisor</Filter>
+    </ClCompile>
+    <ClCompile Include="hypercalls.cpp">
+      <Filter>hypervisor</Filter>
+    </ClCompile>
+    <ClCompile Include="vmx.cpp">
+      <Filter>hypervisor</Filter>
+    </ClCompile>
+    <ClCompile Include="logger.cpp">
+      <Filter>hypervisor</Filter>
+    </ClCompile>
+    <ClCompile Include="vmexit.cpp">
+      <Filter>hypervisor</Filter>
+    </ClCompile>
+    <ClCompile Include="gdt.cpp">
+      <Filter>hypervisor\idt &amp; gdt</Filter>
+    </ClCompile>
+    <ClCompile Include="idt.cpp">
+      <Filter>hypervisor\idt &amp; gdt</Filter>
+    </ClCompile>
+    <ClCompile Include="mm.cpp">
+      <Filter>hypervisor</Filter>
+    </ClCompile>
+    <ClCompile Include="ept.cpp">
+      <Filter>hypervisor</Filter>
+    </ClCompile>
+    <ClCompile Include="mtrr.cpp">
+      <Filter>hypervisor</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="asm_segments.asm">
+      <Filter>Header Files\asm</Filter>
+    </MASM>
+    <MASM Include="asm_vmx.asm">
+      <Filter>Header Files\asm</Filter>
+    </MASM>
+    <MASM Include="asm_vmexit.asm">
+      <Filter>Header Files\asm</Filter>
+    </MASM>
+    <MASM Include="asm_vmlaunch.asm">
+      <Filter>Header Files\asm</Filter>
+    </MASM>
+    <MASM Include="asm_interrupt.asm">
+      <Filter>Header Files\asm</Filter>
+    </MASM>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="handlers.h">
+      <Filter>hypervisor</Filter>
+    </ClInclude>
+    <ClInclude Include="hv.h">
+      <Filter>hypervisor</Filter>
+    </ClInclude>
+    <ClInclude Include="segment.h">
+      <Filter>hypervisor</Filter>
+    </ClInclude>
+    <ClInclude Include="timing.h">
+      <Filter>hypervisor</Filter>
+    </ClInclude>
+    <ClInclude Include="vcpu.h">
+      <Filter>hypervisor</Filter>
+    </ClInclude>
+    <ClInclude Include="vmcs.h">
+      <Filter>hypervisor</Filter>
+    </ClInclude>
+    <ClInclude Include="hypercalls.h">
+      <Filter>hypervisor</Filter>
+    </ClInclude>
+    <ClInclude Include="types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vmx.h">
+      <Filter>hypervisor</Filter>
+    </ClInclude>
+    <ClInclude Include="guest_registers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="logger.h">
+      <Filter>hypervisor</Filter>
+    </ClInclude>
+    <ClInclude Include="vmexit.h">
+      <Filter>hypervisor</Filter>
+    </ClInclude>
+    <ClInclude Include="interrupt_handlers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gdt.h">
+      <Filter>hypervisor\idt &amp; gdt</Filter>
+    </ClInclude>
+    <ClInclude Include="idt.h">
+      <Filter>hypervisor\idt &amp; gdt</Filter>
+    </ClInclude>
+    <ClInclude Include="trap-frame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mm.h">
+      <Filter>hypervisor</Filter>
+    </ClInclude>
+    <ClInclude Include="ept.h">
+      <Filter>hypervisor</Filter>
+    </ClInclude>
+    <ClInclude Include="mtrr.h">
+      <Filter>hypervisor</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

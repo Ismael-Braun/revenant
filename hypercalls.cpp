@@ -35,6 +35,7 @@ namespace hypercalls
 			__writecr3(vmroot_cr3);
 			vcpu->ctx->rax = 0;
 			skip_instruction();
+			return;
 		}
 
 		auto pte = ghv.ept->get_pte(phys_addr);
@@ -44,6 +45,7 @@ namespace hypercalls
 			__writecr3(vmroot_cr3);
 			vcpu->ctx->rax = 0;
 			skip_instruction();
+			return;
 		}
 
 		pte->page_frame_number = ghv.ept->dummy_page_pfn;
@@ -58,13 +60,14 @@ namespace hypercalls
 
 	auto install_ept_hook(vcpu_t* vcpu) -> void
 	{
-		auto addr = reinterpret_cast<void*>(vcpu->ctx->rcx);
+		auto virt_addr = reinterpret_cast<void*>(vcpu->ctx->rcx);
 		auto patch = reinterpret_cast<u8*>(vcpu->ctx->rdx);
 		auto patch_size = vcpu->ctx->r8;
 		auto hint = reinterpret_cast<ept_hint*>(vcpu->ctx->r9);
 		auto mdl = reinterpret_cast<PMDL>(vcpu->ctx->r10);
+		auto phys_addr = reinterpret_cast<void*>(vcpu->ctx->r11);
 
-		vcpu->ctx->rax = ghv.ept->install_page_hook(addr, patch, patch_size, hint, mdl);
+		vcpu->ctx->rax = ghv.ept->install_page_hook(phys_addr, virt_addr, patch, patch_size, hint, mdl);
 
 		ghv.ept->invalidate();
 

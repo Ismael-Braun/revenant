@@ -209,14 +209,11 @@ auto ept_t::remove_ept_hook(void* virt_addr) -> PMDL
 	return nullptr;
 }
 
-auto ept_t::install_page_hook(void* addr, u8* patch, size_t patch_size, ept_hint* hint, PMDL mdl) -> bool
+auto ept_t::install_page_hook(void* phys_addr, void* virt_addr, u8* patch, size_t patch_size, ept_hint* hint, PMDL mdl) -> bool
 {
 	auto vmroot_cr3 = __readcr3();
-	cr3 guest_cr3;
 
-	guest_cr3.flags = vmx::vm_read(VMCS_GUEST_CR3);
-
-	auto physical_page = PAGE_ALIGN(translate(virt_addr_t{ (u64)addr }, guest_cr3.address_of_page_directory << 12));
+	auto physical_page = PAGE_ALIGN(phys_addr);
 
 	if (!physical_page)
 		return false;
@@ -234,7 +231,7 @@ auto ept_t::install_page_hook(void* addr, u8* patch, size_t patch_size, ept_hint
 			hook_entry->target_page->flags = hook_entry->rw_page.flags;
 		}
 
-		auto page_offset = (uintptr_t)addr & (PAGE_SIZE - 1);
+		auto page_offset = (uintptr_t)virt_addr & (PAGE_SIZE - 1);
 		memcpy(hook_entry->fake_page + page_offset, patch, patch_size);
 
 		return true;
@@ -252,7 +249,7 @@ auto ept_t::install_page_hook(void* addr, u8* patch, size_t patch_size, ept_hint
 
 	hook_entry->mdl = mdl;
 	hook_entry->physical_address = physical_page;
-	hook_entry->virtual_address = addr;
+	hook_entry->virtual_address = virt_addr;
 
 	hook_entry->target_page = this->get_pte((u64)physical_page);
 
@@ -276,7 +273,7 @@ auto ept_t::install_page_hook(void* addr, u8* patch, size_t patch_size, ept_hint
 
 	hook_entry->target_page->flags = hook_entry->rw_page.flags;
 
-	auto page_offset = (uintptr_t)addr & (PAGE_SIZE - 1);
+	auto page_offset = (uintptr_t)virt_addr & (PAGE_SIZE - 1);
 	memcpy(hook_entry->fake_page + page_offset, patch, patch_size);
 
 	__writecr3(vmroot_cr3);

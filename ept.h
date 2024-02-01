@@ -46,7 +46,7 @@ public:
 	auto find_ept_hook(void* phys_addr)->ept_hook*;
 	auto remove_ept_hook(void* virt_addr) -> PMDL;
 
-	auto install_page_hook(void* addr, u8* patch, size_t patch_size, ept_hint* hint, PMDL mdl) -> bool;
+	auto install_page_hook(void* phys_addr, void* virt_addr, u8* patch, size_t patch_size, ept_hint* hint, PMDL mdl) -> bool;
 
 	ept_hook* hook_list;
 	u64 hook_count;

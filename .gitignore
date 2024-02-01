@@ -88,3 +88,12 @@ build/revenant_km.sys
 build/revenant_km/revenant_km.sys
 build/revenant_um.exe
 build/revenant_um.pdb
+.vs/revenant/v16/ipch/AutoPCH/1adfd2ad54242f7a/MANUAL_MAP.ipch
+.vs/revenant/v16/ipch/AutoPCH/8a30957205bec8c5/DISASSEMBLY.ipch
+.vs/revenant/v16/ipch/AutoPCH/8bdbfee7d1f77a9c/UTILS.ipch
+.vs/revenant/v16/ipch/AutoPCH/d8050e13a8c1dbd1/XOR.ipch
+build/DiscordHook64.dll
+build/ExampleDLL.dll
+build/intermediate/manual_map.obj
+build/intermediate/utils.obj
+build/OWClient.dll

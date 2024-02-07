@@ -12,17 +12,21 @@ typedef struct ept_split
 
 typedef struct ept_hint
 {
-	alignas(PAGE_SIZE) CHAR page[PAGE_SIZE];
+	alignas(PAGE_SIZE) u8 page_copy[PAGE_SIZE];
+	u64 physical_addr;
+	u64 virtual_addr;
+	u8* patch;
+	size_t patch_size;
+	MDL* mdl;
 };
 
 typedef struct ept_hook
 {
-	alignas(PAGE_SIZE) CHAR fake_page[PAGE_SIZE];
-
-	PMDL mdl;
+	alignas(PAGE_SIZE) u8 fake_page[PAGE_SIZE];
 
 	void* physical_address;
 	void* virtual_address;
+	MDL* mdl;
 
 	ept_pte* target_page;
 	ept_pte original_page;
@@ -44,9 +48,9 @@ public:
 	auto split_large_page(u64 phys) -> bool;
 
 	auto find_ept_hook(void* phys_addr)->ept_hook*;
-	auto remove_ept_hook(void* virt_addr) -> PMDL;
+	auto remove_ept_hook(void* virt_addr) -> bool;
 
-	auto install_page_hook(void* phys_addr, void* virt_addr, u8* patch, size_t patch_size, ept_hint* hint, PMDL mdl) -> bool;
+	auto install_page_hook(ept_hint* hint) -> bool;
 
 	ept_hook* hook_list;
 	u64 hook_count;

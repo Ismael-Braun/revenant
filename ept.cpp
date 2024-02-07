@@ -183,7 +183,7 @@ auto ept_t::find_ept_hook(void* phys_addr)->ept_hook*
 	return nullptr;
 }
 
-auto ept_t::remove_ept_hook(void* virt_addr) -> PMDL
+auto ept_t::remove_ept_hook(void* virt_addr) -> bool
 {
 	for (int i = 0; i < this->hook_count; ++i)
 	{
@@ -191,29 +191,33 @@ auto ept_t::remove_ept_hook(void* virt_addr) -> PMDL
 		{
 			auto hook = &this->hook_list[i];
 
+			auto vmroot_cr3 = __readcr3();
+
+			__writecr3(ghv.system_cr3.flags);
+
+			vmx::unlock_pages(hook->mdl);
+
+			__writecr3(vmroot_cr3);
+
 			hook->target_page->flags = hook->original_page.flags;
-
-			auto ret = hook->mdl;
-
-			memmove(this->hook_list + this->hook_count - 1, this->hook_list + this->hook_count,
-				MAX_EPT_HOOKS - this->hook_count);
-
-			this->hook_count -= 1;
+			hook->physical_address = 0;
+			hook->virtual_address = 0;
+			hook->mdl = 0;
 
 			invalidate();
 
-			return ret;
+			return true;
 		}
 	}
 
-	return nullptr;
+	return false;
 }
 
-auto ept_t::install_page_hook(void* phys_addr, void* virt_addr, u8* patch, size_t patch_size, ept_hint* hint, PMDL mdl) -> bool
+auto ept_t::install_page_hook(ept_hint* hint) -> bool
 {
 	auto vmroot_cr3 = __readcr3();
 
-	auto physical_page = PAGE_ALIGN(phys_addr);
+	auto physical_page = PAGE_ALIGN(hint->physical_addr);
 
 	if (!physical_page)
 		return false;
@@ -226,13 +230,15 @@ auto ept_t::install_page_hook(void* phys_addr, void* virt_addr, u8* patch, size_
 	{
 		if (hook_entry->target_page->flags == hook_entry->original_page.flags)
 		{
-			memcpy(&hook_entry->fake_page[0], &hint->page[0], PAGE_SIZE);
+			memcpy(&hook_entry->fake_page[0], &hint->page_copy[0], PAGE_SIZE);
 
 			hook_entry->target_page->flags = hook_entry->rw_page.flags;
 		}
 
-		auto page_offset = (uintptr_t)virt_addr & (PAGE_SIZE - 1);
-		memcpy(hook_entry->fake_page + page_offset, patch, patch_size);
+		hook_entry->mdl = hint->mdl;
+
+		auto page_offset = (uintptr_t)hint->virtual_addr & (PAGE_SIZE - 1);
+		memcpy(hook_entry->fake_page + page_offset, hint->patch, hint->patch_size);
 
 		return true;
 	}
@@ -247,16 +253,16 @@ auto ept_t::install_page_hook(void* phys_addr, void* virt_addr, u8* patch, size_
 
 	this->hook_count += 1;
 
-	hook_entry->mdl = mdl;
 	hook_entry->physical_address = physical_page;
-	hook_entry->virtual_address = virt_addr;
+	hook_entry->virtual_address = (void*)hint->virtual_addr;
+	hook_entry->mdl = hint->mdl;
 
 	hook_entry->target_page = this->get_pte((u64)physical_page);
 
 	if (!hook_entry->target_page)
 		return false;
 
-	memcpy(&hook_entry->fake_page[0], &hint->page[0], PAGE_SIZE);
+	memcpy(&hook_entry->fake_page[0], &hint->page_copy[0], PAGE_SIZE);
 
 	hook_entry->original_page = *hook_entry->target_page;
 	hook_entry->rw_page = hook_entry->original_page;
@@ -273,8 +279,8 @@ auto ept_t::install_page_hook(void* phys_addr, void* virt_addr, u8* patch, size_
 
 	hook_entry->target_page->flags = hook_entry->rw_page.flags;
 
-	auto page_offset = (uintptr_t)virt_addr & (PAGE_SIZE - 1);
-	memcpy(hook_entry->fake_page + page_offset, patch, patch_size);
+	auto page_offset = (uintptr_t)hint->virtual_addr & (PAGE_SIZE - 1);
+	memcpy(hook_entry->fake_page + page_offset, hint->patch, hint->patch_size);
 
 	__writecr3(vmroot_cr3);
 

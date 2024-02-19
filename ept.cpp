@@ -191,17 +191,18 @@ auto ept_t::remove_ept_hook(void* virt_addr) -> bool
 		{
 			auto hook = &this->hook_list[i];
 
-			auto vmroot_cr3 = __readcr3();
-
-			__writecr3(ghv.system_cr3.flags);
-
-			vmx::unlock_pages(hook->mdl);
-
-			__writecr3(vmroot_cr3);
-
 			hook->target_page->flags = hook->original_page.flags;
 			hook->physical_address = 0;
 			hook->virtual_address = 0;
+
+			//auto vmroot_cr3 = __readcr3();
+
+			//__writecr3(ghv.system_cr3.flags);
+
+			//vmx::unlock_pages(hook->mdl);
+
+			//__writecr3(vmroot_cr3);
+
 			hook->mdl = 0;
 
 			invalidate();

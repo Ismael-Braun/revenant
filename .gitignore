@@ -146,3 +146,5 @@ build/intermediate/asm_segments.obj
 build/intermediate/asm_vmexit.obj
 build/intermediate/asm_vmlaunch.obj
 build/intermediate/asm_vmx.obj
+build/intermediate/command.obj
+build/intermediate/asm_hv.obj

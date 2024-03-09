@@ -7,8 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "revenant", "revenant.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "revenant_km", "..\revenant_km\revenant_km.vcxproj", "{E771D80D-A31D-422F-94FA-A62F62BEA647}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "revenant_um", "..\revenant_um\revenant_um.vcxproj", "{42B932B3-419E-41F1-B765-6F6BC3801F19}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -69,18 +67,6 @@ Global
 		{E771D80D-A31D-422F-94FA-A62F62BEA647}.Release|x86.ActiveCfg = Release|Win32
 		{E771D80D-A31D-422F-94FA-A62F62BEA647}.Release|x86.Build.0 = Release|Win32
 		{E771D80D-A31D-422F-94FA-A62F62BEA647}.Release|x86.Deploy.0 = Release|Win32
-		{42B932B3-419E-41F1-B765-6F6BC3801F19}.Debug|ARM.ActiveCfg = Debug|Win32
-		{42B932B3-419E-41F1-B765-6F6BC3801F19}.Debug|ARM64.ActiveCfg = Debug|Win32
-		{42B932B3-419E-41F1-B765-6F6BC3801F19}.Debug|x64.ActiveCfg = Debug|x64
-		{42B932B3-419E-41F1-B765-6F6BC3801F19}.Debug|x64.Build.0 = Debug|x64
-		{42B932B3-419E-41F1-B765-6F6BC3801F19}.Debug|x86.ActiveCfg = Debug|Win32
-		{42B932B3-419E-41F1-B765-6F6BC3801F19}.Debug|x86.Build.0 = Debug|Win32
-		{42B932B3-419E-41F1-B765-6F6BC3801F19}.Release|ARM.ActiveCfg = Release|Win32
-		{42B932B3-419E-41F1-B765-6F6BC3801F19}.Release|ARM64.ActiveCfg = Release|Win32
-		{42B932B3-419E-41F1-B765-6F6BC3801F19}.Release|x64.ActiveCfg = Release|x64
-		{42B932B3-419E-41F1-B765-6F6BC3801F19}.Release|x64.Build.0 = Release|x64
-		{42B932B3-419E-41F1-B765-6F6BC3801F19}.Release|x86.ActiveCfg = Release|Win32
-		{42B932B3-419E-41F1-B765-6F6BC3801F19}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

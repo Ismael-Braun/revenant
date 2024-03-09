@@ -178,6 +178,8 @@ namespace handlers
 			case hypercalls::hypercall_hide_physical_page:    hypercalls::hide_physical_page(cpu);   return;
 			case hypercalls::hypercall_instal_ept_hook:       hypercalls::install_ept_hook(cpu);     return;
 			case hypercalls::hypercall_remove_ept_hook:       hypercalls::remove_ept_hook(cpu);      return;
+			case hypercalls::hypercall_current_dirbase:       hypercalls::current_dirbase(cpu);      return;
+			case hypercalls::hypercall_copy_virtual_memory:   hypercalls::copy_memory(cpu);          return;
 		}
 
 		inject_hw_exception(invalid_opcode);

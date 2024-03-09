@@ -15,7 +15,9 @@ namespace hypercalls
 		hypercall_hv_base,
 		hypercall_hide_physical_page,
 		hypercall_instal_ept_hook,
-		hypercall_remove_ept_hook
+		hypercall_remove_ept_hook,
+		hypercall_current_dirbase,
+		hypercall_copy_virtual_memory
 	};
 
 	typedef struct input
@@ -38,5 +40,7 @@ namespace hypercalls
 	auto hide_physical_page(vcpu_t* vcpu) -> void;
 	auto install_ept_hook(vcpu_t* vcpu) -> void;
 	auto remove_ept_hook(vcpu_t* vcpu) -> void;
+	auto current_dirbase(vcpu_t* vcpu) -> void;
+	auto copy_memory(vcpu_t* vcpu) -> void;
 }
 

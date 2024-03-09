@@ -51,5 +51,7 @@ namespace hv
 
     auto map_page(u64 phys_addr, map_type type = map_type::src)->u64;
     auto map_virt(u64 dirbase, u64 virt_addr, map_type map_type = map_type::src)->u64;
+
+    auto copy_virt(u64 dirbase_src, u64 virt_src, u64 dirbase_dest, u64 virt_dest, u64 size) -> bool;
 }
 

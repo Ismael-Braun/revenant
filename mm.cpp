@@ -146,4 +146,45 @@ namespace hv
 
         return map_page(phys_addr, map_type);
     }
+
+    auto copy_virt(u64 dirbase_src, u64 virt_src, u64 dirbase_dest, u64 virt_dest, u64 size) -> bool
+    {
+        while (size)
+        {
+            auto dest_size = PAGE_SIZE - virt_addr_t{ virt_dest }.offset_4kb;
+            if (size < dest_size)
+                dest_size = size;
+
+            auto src_size = PAGE_SIZE - virt_addr_t{ virt_src }.offset_4kb;
+            if (size < src_size)
+                src_size = size;
+
+            const auto mapped_src =
+                reinterpret_cast<void*>(
+                    map_virt(dirbase_src, virt_src, map_type::src));
+
+            if (!mapped_src)
+                return false;
+
+            const auto mapped_dest =
+                reinterpret_cast<void*>(
+                    map_virt(dirbase_dest, virt_dest, map_type::dest));
+
+            if (!mapped_dest)
+                return false;
+
+            // copy directly between the two pages...
+            auto current_size = min(dest_size, src_size);
+
+            __try { memcpy(mapped_dest, mapped_src, current_size); }
+            __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+
+            virt_src += current_size;
+            virt_dest += current_size;
+            size -= current_size;
+        }
+
+        return true;
+    }
+
 }

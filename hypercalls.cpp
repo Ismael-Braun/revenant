@@ -1,6 +1,7 @@
 #include "hypercalls.h"
 #include "vmx.h"
 #include "hv.h"
+#include "mm.h"
 
 using namespace vmx;
 
@@ -74,6 +75,29 @@ namespace hypercalls
 		auto virt = reinterpret_cast<void*>(vcpu->ctx->rcx);
 
 		vcpu->ctx->rax = ghv.ept->remove_ept_hook(virt);
+
+		skip_instruction();
+	}
+
+	auto current_dirbase(vcpu_t* vcpu) -> void
+	{
+		cr3 dirbase;
+		dirbase.flags = vm_read(VMCS_GUEST_CR3);
+
+		vcpu->ctx->rax = dirbase.address_of_page_directory << 12;
+
+		skip_instruction();
+	}
+
+	auto copy_memory(vcpu_t* vcpu) -> void
+	{
+		auto dirbase_src = vcpu->ctx->rcx;
+		auto virt_src = vcpu->ctx->rdx;
+		auto dirbase_dest = vcpu->ctx->r8;
+		auto virt_dest = vcpu->ctx->r9;
+		auto size = vcpu->ctx->r10;
+
+		vcpu->ctx->rax = hv::copy_virt(dirbase_src, virt_src, dirbase_dest, virt_dest, size);
 
 		skip_instruction();
 	}

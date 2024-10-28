@@ -6,7 +6,7 @@ closely as possible.
 # Features
 - Ept support with mapping of 2MB pages (splitted to 4KB pages if needed)
 - Inline hooking via ept
-- VM-exit handled cases (see at [vmexit.cpp](https://github.com/Ismael-Braun/revenant/blob/main/vmexit.cpp)): `EXCEPTION/NMI` `GETSEC` `INVD` `NMI WINDOW` `MOV CR` `RDMSR/WRMSR` `XSETBV` `VMXON` `VMCALL` `RDTSC/RDTSCP` `EPT VIOLATION` `EPT MISCONFIGURATION` `INVEPT` `VMCLEAR`
+- VM-exit handled cases (see at [vmexit.cpp](https://github.com/Ismael-Braun/revenant/blob/main/src/vmexit.cpp)): `EXCEPTION/NMI` `GETSEC` `INVD` `NMI WINDOW` `MOV CR` `RDMSR/WRMSR` `XSETBV` `VMXON` `VMCALL` `RDTSC/RDTSCP` `EPT VIOLATION` `EPT MISCONFIGURATION` `INVEPT` `VMCLEAR`
 
 # Compilation
 - [Visual Studio](https://visualstudio.microsoft.com/downloads/)
